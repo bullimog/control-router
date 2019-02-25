@@ -1,8 +1,8 @@
-# springboot3
-Mockito tinkering in Spring Boot
+# Control Router
+Spring Boot application to control a remove web form.
 
 Build and package:
 > mvn clean package
 
 Execute:
-> java -jar ./target/spring-boot-tutorial-basics-0.0.1-SNAPSHOT.jar
+> java -jar ./target/control-router-0.0.1-SNAPSHOT.jar

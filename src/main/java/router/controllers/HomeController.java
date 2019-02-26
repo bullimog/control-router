@@ -1,12 +1,15 @@
 package router.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
+import router.connectors.HttpConnection;
 import router.models.Greeting;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -16,18 +19,18 @@ import java.util.concurrent.atomic.AtomicLong;
 @Controller
 public class HomeController {
 
-//    DatabaseConnection db;
-//
-//    public GreetingController(){}
-//
-//    public GreetingController(DatabaseConnection db){
-//        super();
-//        this.db = db;
-//    }
+    HttpConnection connection;
 
-//    public String getSomeData(String query){
-//        return db.getData(query);
-//    }
+    public HomeController(){}
+
+    public HomeController(HttpConnection connection){
+        super();
+        this.connection = connection;
+    }
+
+    public String getSomeData(String url){
+        return connection.doGet(url);
+    }
 
 
 
@@ -35,30 +38,37 @@ public class HomeController {
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping("/")
-    public String index() {
-        int[] nums = {1,2,3};
-        sum(nums);
-        return "Greetings from Spring Boot!";
+    public ModelAndView index() {
+        HashMap params = new HashMap<String, Object>();
+        return new ModelAndView("index", params);
+    }
+
+
+
+    @RequestMapping(value = "/getDateAndTime")
+    public ModelAndView getDateAndTime() {
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        String date_time = dtf.format(now);
+
+        HashMap params = new HashMap<String, Object>();
+        params.put("date_time", date_time);
+
+        return new ModelAndView("showMessage", params);
     }
 
     @RequestMapping("/greeting")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return new Greeting(counter.incrementAndGet(),
+    public ModelAndView greeting(@RequestParam(value="name", defaultValue="World") String name) {
+        Greeting g = new Greeting(counter.incrementAndGet(),
                 String.format(template, name));
+
+        HashMap params = new HashMap<String, Object>();
+        params.put("greeting", g);
+        return new ModelAndView("greeting", params);
     }
 
-    @RequestMapping(value = "/rest/{pathparam1}/{pathparam2}")
-    public Greeting test(@PathVariable String pathparam1, @PathVariable String pathparam2, @RequestParam(value="name", defaultValue="The World") String name) {
-        return new Greeting(counter.incrementAndGet(),
-                String.format(template, pathparam1));
-    }
 
-    int sum(int[] numbers) {
-        int sum = 0;
-        for (int i : numbers) {
-            sum += i;
-        }
-        return sum;
-    }
+
 
 }

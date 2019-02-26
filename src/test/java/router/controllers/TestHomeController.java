@@ -21,15 +21,15 @@ public class TestHomeController {
     private HomeController hc = new HomeController();
 
     @Mock
-    private HttpConnection dataServiceMock;
+    private HttpConnection connection;
 
     @Test
     public void testHomeControllerIndex() {
-        when(dataServiceMock.doGet("/")).thenReturn("Test Data");
         ModelAndView result = hc.index();
         assertEquals("index", result.getViewName());
         assertEquals(new HashMap<String, Object>(), result.getModel());
 
+        when(connection.doGet("/")).thenReturn("Test Data");
         result = hc.pullPage("/");
         assertEquals("showMessage", result.getViewName());
         assertEquals("Test Data", result.getModel().get("date_time"));

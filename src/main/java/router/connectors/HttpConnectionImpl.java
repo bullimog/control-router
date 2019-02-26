@@ -16,7 +16,7 @@ public class HttpConnectionImpl implements HttpConnection {
 
     @Override
     public String doGet(String url) {
-        StringBuffer content = new StringBuffer();
+        String rtn = "No data";
 
         try {
 
@@ -60,7 +60,7 @@ public class HttpConnectionImpl implements HttpConnection {
 //            con.setRequestProperty("Cookie",
 //                    StringUtils.join(cookieManager.getCookieStore().getCookies(), ";"));
 //
-
+            StringBuffer content = new StringBuffer();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -69,12 +69,13 @@ public class HttpConnectionImpl implements HttpConnection {
             }
             in.close();
 
+            rtn = content.toString();
 
 
         }catch(IOException ex){
             System.out.println("IOException Caught: "+ex);
         }
 
-        return content.toString();
+        return rtn;
     }
 }

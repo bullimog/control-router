@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>spring-boot-router</name>
-	<description>Usibng Spring Boot to control a router</description>
+	<description>Using Spring Boot to control a router</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

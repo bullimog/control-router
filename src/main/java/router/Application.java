@@ -10,11 +10,6 @@ import router.connectors.HttpConnectionImpl;
 @SpringBootApplication
 public class Application {
 
-    @Bean
-    public HttpConnection getHttpConnection() {
-        return new HttpConnectionImpl();
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

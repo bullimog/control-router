@@ -17,10 +17,10 @@ import java.util.HashMap;
 public class TestHomeController {
 
 
-    @InjectMocks
+    @InjectMocks //We'd like to inject mocks into this Object
     private HomeController hc = new HomeController();
 
-    @Mock
+    @Mock //Mockito will create a mock version and inject it into HomeController.
     private HttpConnection connection;
 
     @Test

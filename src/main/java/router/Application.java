@@ -2,18 +2,20 @@ package router;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-
+import org.springframework.context.annotation.Bean;
+import router.connectors.HttpConnection;
+import router.connectors.HttpConnectionImpl;
 
 
 @SpringBootApplication
 public class Application {
 
+    @Bean
+    public HttpConnection getHttpConnection() {
+        return new HttpConnectionImpl();
+    }
+
     public static void main(String[] args) {
-        ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
-//
-//        for (String name : applicationContext.getBeanDefinitionNames()) {
-//            System.out.println(name);
-//        }
+        SpringApplication.run(Application.class, args);
     }
 }

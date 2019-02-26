@@ -21,7 +21,7 @@ public class HttpConnectionImpl implements HttpConnection {
         try {
 
             URL urlIn = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) urlIn.openConnection();
+            HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
             con.setRequestMethod("GET");
 
 
@@ -40,7 +40,12 @@ public class HttpConnectionImpl implements HttpConnection {
                         System.out.println("domain: " + cookie.getDomain());
                         System.out.println("maxAge: " + cookie.getMaxAge());
                         System.out.println("");
+
+                        if(cookie.getName().equals("xAuth_SESSION_ID")) {
+                            System.out.println("The session cookie: " + cookie.getValue());
+                        }
                     }
+
                 }catch(NullPointerException ex){
                     System.out.println("NPE: "+ex);
                 }

@@ -1,17 +1,51 @@
 package router.connectors;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpCookie;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.OutputStreamWriter;
+import java.net.*;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+
 
 
 public class HttpConnectionImpl implements HttpConnection {
 
+    @Override
+    public int doPost(String url, HashMap<String, String> formData) throws IOException{
+        int responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
+        URL urlIn = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
+        con.setUseCaches(false);
+        con.setDoInput(true);
+        con.setRequestProperty("Cookie", "xAuth_SESSION_ID=someValue; name2=value2");
+
+        StringBuffer requestParams = new StringBuffer();
+        if (formData != null && formData.size() > 0) {
+            con.setDoOutput(true); // true indicates POST request
+
+            Iterator<String> paramIterator = formData.keySet().iterator();
+            while (paramIterator.hasNext()) {
+                String key = paramIterator.next();
+                String value = formData.get(key);
+                requestParams.append(URLEncoder.encode(key, "UTF-8"));
+                requestParams.append("=").append(
+                        URLEncoder.encode(value, "UTF-8"));
+                requestParams.append("&");
+            }
+
+            OutputStreamWriter writer = new OutputStreamWriter(
+                    con.getOutputStream());
+            writer.write(requestParams.toString());
+            responseCode = con.getResponseCode();
+            writer.flush();
+        }
+
+        return responseCode;
+    }
 
 
     @Override
@@ -19,12 +53,9 @@ public class HttpConnectionImpl implements HttpConnection {
         String rtn = "No data";
 
         try {
-
             URL urlIn = new URL(url);
             HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
             con.setRequestMethod("GET");
-
-
 
             int responseCode = con.getResponseCode();
             System.out.println("Response Code: "+responseCode);
@@ -32,6 +63,13 @@ public class HttpConnectionImpl implements HttpConnection {
                 try {
                     String cookiesHeader = con.getHeaderField("Set-Cookie");
                     List<HttpCookie> cookies = HttpCookie.parse(cookiesHeader);
+
+                    CookieManager cookieManager = new CookieManager();
+                    cookies.forEach(cookie -> cookieManager.getCookieStore().add(null, cookie));
+                    Optional<HttpCookie> sessionCookie = cookies.stream()
+                        .findAny().filter(cookie -> cookie.getName().equals("xAuth_SESSION_ID"));
+
+
                     System.out.println("Cookies... ");
                     for (HttpCookie cookie : cookies) {
                         System.out.println("path: " + cookie.getPath());
@@ -39,7 +77,7 @@ public class HttpConnectionImpl implements HttpConnection {
                         System.out.println("value: " + cookie.getValue());
                         System.out.println("domain: " + cookie.getDomain());
                         System.out.println("maxAge: " + cookie.getMaxAge());
-                        System.out.println("");
+                        System.out.println();
 
                         if(cookie.getName().equals("xAuth_SESSION_ID")) {
                             System.out.println("The session cookie: " + cookie.getValue());

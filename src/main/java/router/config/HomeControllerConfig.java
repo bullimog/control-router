@@ -6,12 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import router.connectors.HttpConnection;
 import router.connectors.HttpConnectionImpl;
 import router.controllers.HomeController;
+import router.controllers.LoginController;
 
 @Configuration
-//When constructing a HomeController, use this Bean
-@ComponentScan(basePackageClasses = HomeController.class)
+//When constructing a Controller, use this Bean
+//@ComponentScan(basePackageClasses = {HomeController.class, LoginController.class} )
 
-public class HomeControllerconfig {
+public class HomeControllerConfig {
 
     @Bean
     public HttpConnection getHttpConnection() {

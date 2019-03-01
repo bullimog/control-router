@@ -1,12 +1,8 @@
 package router.connectors;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.*;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +10,20 @@ import java.util.Optional;
 
 public class HttpConnectionImpl implements HttpConnection {
 
+
+
+
     @Override
-    public int doPost(String url, HashMap<String, String> formData) throws IOException{
+    public int doPost(String url, HashMap<String, String> formData) {
+        int rtn = 500;
+
+        try{ rtn = tryPost(url, formData);
+        }catch(IOException ex){System.out.println("IOException caught: "+ex);}
+
+        return rtn;
+    }
+
+    private int tryPost(String url, HashMap<String, String> formData) throws IOException{
         int responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
         URL urlIn = new URL(url);
         HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
@@ -27,15 +35,18 @@ public class HttpConnectionImpl implements HttpConnection {
         if (formData != null && formData.size() > 0) {
             con.setDoOutput(true); // true indicates POST request
 
-            Iterator<String> paramIterator = formData.keySet().iterator();
-            while (paramIterator.hasNext()) {
-                String key = paramIterator.next();
-                String value = formData.get(key);
-                requestParams.append(URLEncoder.encode(key, "UTF-8"));
-                requestParams.append("=").append(
-                        URLEncoder.encode(value, "UTF-8"));
-                requestParams.append("&");
-            }
+//            Iterator<String> paramIterator = formData.keySet().iterator();
+            formData.forEach((key,value) -> {
+//                String key = paramIterator.next();
+//                String value = formData.get(key);
+                try{
+                    requestParams.append(URLEncoder.encode(key, "UTF-8"));
+                    requestParams.append("=").append(URLEncoder.encode(value, "UTF-8"));
+                    requestParams.append("&");
+                }catch(UnsupportedEncodingException ex) {
+                    System.out.println("UnsupportedEncodingException: "+ ex);
+                }
+            });
 
             OutputStreamWriter writer = new OutputStreamWriter(
                     con.getOutputStream());

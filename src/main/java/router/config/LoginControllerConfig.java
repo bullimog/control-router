@@ -2,9 +2,9 @@ package router.config;
 
 public class LoginControllerConfig {
 
-    public String loginUrl;
-    public String username;
-    public String password;
+    private String loginUrl;
+    private String username;
+    private String password;
 
 
     public LoginControllerConfig(String loginUrl, String username, String password){

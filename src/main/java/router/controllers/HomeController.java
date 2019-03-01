@@ -24,7 +24,7 @@ public class HomeController {
 
     @RequestMapping("/")
     public ModelAndView index() {
-        HashMap params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         return new ModelAndView("index", params);
     }
 
@@ -36,7 +36,7 @@ public class HomeController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         String date_time = dtf.format(now);
 
-        HashMap params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("date_time", date_time);
 
         return new ModelAndView("showMessage", params);
@@ -49,7 +49,7 @@ public class HomeController {
         Greeting g = new Greeting(counter.incrementAndGet(),
                 String.format(template, name));
 
-        HashMap params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("greeting", g);
         return new ModelAndView("greeting", params);
     }
@@ -59,7 +59,7 @@ public class HomeController {
     public ModelAndView pullPage(@RequestParam(value="url", defaultValue="http://www.google.com") String url) {
 
         String content = connection.doGet(url);
-        HashMap params = new HashMap<String, Object>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("date_time", content);
         return new ModelAndView("showMessage", params);
     }

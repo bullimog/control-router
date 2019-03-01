@@ -5,5 +5,5 @@ import java.util.HashMap;
 
 public interface HttpConnection {
     String doGet(String url);
-    int doPost(String url, HashMap<String, String> formData) throws IOException;
+    int doPost(String url, HashMap<String, String> formData);
 }

@@ -34,8 +34,8 @@ public class TestLoginController {
         when(loginControllerConfig.getPassword()).thenReturn("Davidson");
 
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("username", "Dave");
-        formData.put("password", "Davidson");
+        formData.put("rn", "Dave");
+        formData.put("hidepw", "Davidson");
         when(connection.doPost("/test", formData)).thenReturn(200);
 
         ModelAndView result = loginController.loginPage();

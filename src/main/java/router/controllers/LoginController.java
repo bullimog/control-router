@@ -24,8 +24,8 @@ public class LoginController {
     @RequestMapping("/login")
     public ModelAndView loginPage() {
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("username", config.getUsername());
-        formData.put("password",config.getPassword());
+        formData.put("rn", config.getUsername());
+        formData.put("hidepw",config.getPassword());
         int response = connection.doPost(config.getLoginUrl(), formData);
 
         HashMap<String, Object> params = new HashMap<>();

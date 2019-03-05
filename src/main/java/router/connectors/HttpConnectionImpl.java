@@ -10,23 +10,27 @@ import java.util.Optional;
 
 public class HttpConnectionImpl implements HttpConnection {
 
-
-
-
     @Override
     public int doPost(String url, HashMap<String, String> formData) {
-        int rtn = 500;
+        int rtn = HttpURLConnection.HTTP_INTERNAL_ERROR;
+        System.out.println("##### formData: " + formData);
+        System.out.println("##### Url: " + url);
 
-        try{ rtn = tryPost(url, formData);
-        }catch(IOException ex){System.out.println("IOException caught: "+ex);}
+        try{
+            URL urlIn = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
+            rtn = tryPost(con, formData);
+        }
+        catch(IOException ex){System.out.println("IOException caught: "+ex);}
 
         return rtn;
     }
 
-    private int tryPost(String url, HashMap<String, String> formData) throws IOException{
+    public int tryPost(HttpURLConnection con, HashMap<String, String> formData) throws IOException{
         int responseCode = HttpURLConnection.HTTP_INTERNAL_ERROR;
-        URL urlIn = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
+        System.out.println("####### tryPost");
+        //URL urlIn = new URL(url);
+        //HttpURLConnection con = (HttpURLConnection) urlIn.openConnection();
         con.setUseCaches(false);
         con.setDoInput(true);
         con.setRequestProperty("Cookie", "xAuth_SESSION_ID=someValue; name2=value2");
@@ -50,8 +54,10 @@ public class HttpConnectionImpl implements HttpConnection {
 
             OutputStreamWriter writer = new OutputStreamWriter(
                     con.getOutputStream());
+            System.out.println("##### requestParams: " + requestParams);
             writer.write(requestParams.toString());
             responseCode = con.getResponseCode();
+            System.out.println("##### responseCode: " + responseCode);
             writer.flush();
         }
 

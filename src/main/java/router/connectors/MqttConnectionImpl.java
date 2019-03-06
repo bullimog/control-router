@@ -1,6 +1,5 @@
 package router.connectors;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -12,31 +11,28 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 
-public class MQTTConnectorImpl implements MQTTConnector{
+public class MqttConnectionImpl implements MqttConnection {
 
-    // Private instance variables
     private MqttClient client;
     private String brokerUrl;
     private MqttConnectOptions conOpt;
-    private boolean clean;
 
     /**
-     * Constructs an instance of the sample client wrapper
+     * Configures an instance of the sample client wrapper
      *
      * @param brokerUrl    the url of the server to connect to
      * @param clientId     the client id to connect with
      * @param cleanSession clear state at end of connection or not (durable or non-durable subscriptions)
      * @throws MqttException
      */
-    public MQTTConnectorImpl(String brokerUrl, String clientId, boolean cleanSession) throws MqttException {
+    public void openConnection(String brokerUrl, String clientId, boolean cleanSession) throws MqttException{
         this.brokerUrl = brokerUrl;
-        this.clean = cleanSession;
 
         String tmpDir = System.getProperty("java.io.tmpdir");
         MqttDefaultFilePersistence dataStore = new MqttDefaultFilePersistence(tmpDir);
 
         conOpt = new MqttConnectOptions();
-        conOpt.setCleanSession(clean);
+        conOpt.setCleanSession(cleanSession);
 
         client = new MqttClient(this.brokerUrl, clientId, dataStore);
         client.setCallback(this);
@@ -54,19 +50,31 @@ public class MQTTConnectorImpl implements MQTTConnector{
      * @throws MqttException
      */
     public void subscribe(String topicName, int qos) throws MqttException {
-        client.connect(conOpt);
-        log("Connected to " + brokerUrl + " with client ID " + client.getClientId());
+        if( (client != null) && (conOpt != null)) {
+            client.connect(conOpt);
+            log("Connected to " + brokerUrl + " with client ID " + client.getClientId());
 
-        log("Subscribing to topic \"" + topicName + "\" qos " + qos);
-        client.subscribe(topicName, qos);
+            log("Subscribing to topic \"" + topicName + "\" qos " + qos);
+            client.subscribe(topicName, qos);
+        }
+        else{
+            Throwable t = new Throwable("MQTT Connection not configured. Has openConnection() been executed?");
+            throw (new MqttException(t));
+        }
     }
 
 
     public void unsubscribe(String topicName) throws MqttException {
-        client.unsubscribe(topicName);
-        client.disconnect();
-        client.close();
-        log("Disconnected");
+        if( client != null ) {
+            client.unsubscribe(topicName);
+            client.disconnect();
+            client.close();
+            log("Disconnected");
+        }
+        else{
+            Throwable t = new Throwable("MQTT Connection not configured. Has openConnection() been executed?");
+            throw (new MqttException(t));
+        }
     }
 
 
@@ -89,7 +97,6 @@ public class MQTTConnectorImpl implements MQTTConnector{
      */
     public void connectionLost(Throwable cause) {
         log("Connection to " + brokerUrl + " lost!" + cause);
-        //System.exit(1);
     }
 
 

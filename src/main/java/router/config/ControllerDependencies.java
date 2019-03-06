@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import router.connectors.HttpConnection;
 import router.connectors.HttpConnectionImpl;
+import router.connectors.MqttConnection;
+import router.connectors.MqttConnectionImpl;
 
 
 @Configuration
@@ -23,5 +25,10 @@ public class ControllerDependencies {
     @Bean
     public HttpConnection getHttpConnection() {
         return new HttpConnectionImpl();
+    }
+
+    @Bean
+    public MqttConnection getMQTTConnection() {
+        return new MqttConnectionImpl();
     }
 }

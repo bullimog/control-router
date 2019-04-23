@@ -11,7 +11,7 @@ import java.util.HashSet;
 @RestController
 public class JsonController {
     @GetMapping("/family/{familyId}")
-    public Family retrieveCoursesForStudent(@PathVariable long familyId) {
+    public Family retrieveFamily(@PathVariable long familyId) {
         Person p1 = new Person(1, "Dave", "Brown", 15);
         Person p2 = new Person(2, "Sally", "Brown", 17);
         Person p3 = new Person(3, "Doreen", "Smith", 45);

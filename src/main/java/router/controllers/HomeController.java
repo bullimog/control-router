@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import router.connectors.HttpConnection;
 import router.models.Greeting;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +28,13 @@ public class HomeController {
     public ModelAndView index() {
         HashMap<String, Object> params = new HashMap<>();
         return new ModelAndView("index", params);
+    }
+
+    @RequestMapping("/forward")
+    public RedirectView forward(RedirectAttributes attributes) {
+        attributes.addFlashAttribute("flashAttr", "Nothing");
+        attributes.addAttribute("attr", "Nothing");
+        return new RedirectView("/greeting");
     }
 
 

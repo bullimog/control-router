@@ -20,7 +20,7 @@ public class Family {
     public void setId (long id){this.id = id;}
     public void setAddress1 (String address1){this.address1 = address1;}
     public void setAddress2 (String address2){this.address2 = address2;}
-    public void setPersons (HashSet persons){this.persons = persons;}
+    public void setPersons (HashSet<Person> persons){this.persons = persons;}
 
     public long getId(){return id;}
     public String getAddress1(){return address1;}

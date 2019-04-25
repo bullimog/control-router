@@ -22,7 +22,7 @@ public class FamilyConnectionImpl implements FamilyConnection {
     public Family getFamily(long id){
 
         String url = fcc.getFamilyUrl();
-        String content = connection.doGet(url);
+        String content = connection.doGet(url+"/"+id);
 
         Family f = null;
         try {

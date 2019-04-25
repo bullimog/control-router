@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import router.connectors.FamilyConnection;
 import router.connectors.HttpConnection;
+import router.models.Family;
 import router.models.Greeting;
 import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDateTime;
@@ -21,8 +23,24 @@ public class HomeController {
     @Autowired
     private HttpConnection connection;
 
+    @Autowired
+    private FamilyConnection fc; //Dependency resolved by a @Bean method that returns a FamilyConnection
+
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
+
+
+    @RequestMapping("/family")
+    public ModelAndView family(@RequestParam(value="id", defaultValue="1") String id) {
+        long idIn = 1;
+        try{
+            idIn = Long.parseLong(id);
+        }catch(NumberFormatException ex) {System.out.println("WARN:"+ex);}
+        Family family = fc.getFamily(idIn);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("family", family);
+        return new ModelAndView("family", params);
+    }
 
     @RequestMapping("/")
     public ModelAndView index() {

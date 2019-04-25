@@ -13,6 +13,7 @@ import router.connectors.HttpConnection;
 
 import org.junit.Test;
 
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 
 @RunWith(MockitoJUnitRunner.class) //runs MockitoAnnotations.initMocks(this);
@@ -36,12 +37,12 @@ public class TestLoginController {
         HashMap<String, String> formData = new HashMap<>();
         formData.put("rn", "Dave");
         formData.put("hidepw", "Davidson");
-        when(connection.doPost("/test", formData)).thenReturn(200);
+        when(connection.doPost("/test", formData)).thenReturn(HttpURLConnection.HTTP_OK);
 
         ModelAndView result = loginController.loginPage();
         assertEquals("showMessage", result.getViewName());
         HashMap<String, Object> expected = new HashMap<>();
-        expected.put("date_time", 200);
+        expected.put("date_time", HttpURLConnection.HTTP_OK);
         assertEquals(expected, result.getModel());
     }
 

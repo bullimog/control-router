@@ -1,6 +1,5 @@
 package router.connectors;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 public interface HttpConnection {

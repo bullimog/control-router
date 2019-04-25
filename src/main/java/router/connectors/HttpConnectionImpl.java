@@ -75,8 +75,8 @@ public class HttpConnectionImpl implements HttpConnection {
             con.setRequestMethod("GET");
 
             int responseCode = con.getResponseCode();
-            System.out.println("Response Code: "+responseCode);
-            if(responseCode >=200 && responseCode < 300) {
+            System.out.println("INFO: Response Code from "+ url + " is " + responseCode);
+            if(responseCode >= HttpURLConnection.HTTP_OK && responseCode < HttpURLConnection.HTTP_MULT_CHOICE) {
                 try {
                     String cookiesHeader = con.getHeaderField("Set-Cookie");
                     List<HttpCookie> cookies = HttpCookie.parse(cookiesHeader);
@@ -102,7 +102,7 @@ public class HttpConnectionImpl implements HttpConnection {
                     }
 
                 }catch(NullPointerException ex){
-                    System.out.println("NPE: "+ex);
+                    System.out.println("WARN: No Cookies in response");
                 }
             }
 

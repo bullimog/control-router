@@ -1,10 +1,10 @@
 package router.models;
 
 public class Person {
-    private final long id;
-    private final String first;
-    private final String last;
-    private final int age;
+    private  long id;
+    private  String first;
+    private  String last;
+    private  int age;
 
     public Person(long id, String first, String last, int age){
         this.id = id;
@@ -13,10 +13,17 @@ public class Person {
         this.age = age;
     }
 
+    public Person(){}
+
     public long getId() {
         return id;
     }
     public String getFirst(){return first;}
     public String getLast(){return last;}
     public int getAge(){return age;}
+
+    public void setId(long id) {this.id = id;}
+    public void setFirst(String first) {this.first = first;}
+    public void setLast(String last) {this.last = last;}
+    public void setAge(int age) {this.age = age;}
 }

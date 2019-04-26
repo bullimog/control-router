@@ -13,6 +13,7 @@ import router.connectors.HttpConnection;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 @RunWith(MockitoJUnitRunner.class) //runs MockitoAnnotations.initMocks(this);
 public class TestHomeController {
@@ -29,7 +30,7 @@ public class TestHomeController {
         assertEquals("index", result.getViewName());
         assertEquals(new HashMap<String, Object>(), result.getModel());
 
-        when(connection.doGet("/")).thenReturn("Test Data");
+        when(connection.doGet("/")).thenReturn(CompletableFuture.completedFuture("Test Data"));
         result = homeController.pullPage("/");
         assertEquals("showMessage", result.getViewName());
         assertEquals("Test Data", result.getModel().get("date_time"));

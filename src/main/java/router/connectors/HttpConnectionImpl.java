@@ -1,11 +1,14 @@
 package router.connectors;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.concurrent.CompletableFuture;
 
 
 public class HttpConnectionImpl implements HttpConnection {
@@ -66,7 +69,8 @@ public class HttpConnectionImpl implements HttpConnection {
 
 
     @Override
-    public String doGet(String url) {
+    @Async
+    public CompletableFuture<String> doGet(String url) {
         String rtn = "No data";
 
         try {
@@ -135,7 +139,6 @@ public class HttpConnectionImpl implements HttpConnection {
         }catch(IOException ex){
             System.out.println("IOException Caught: "+ex);
         }
-
-        return rtn;
+        return CompletableFuture.completedFuture(rtn);
     }
 }

@@ -9,6 +9,7 @@ import router.models.Person;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.concurrent.CompletableFuture;
 
 public class FamilyConnectionImpl implements FamilyConnection {
     @Autowired
@@ -22,7 +23,10 @@ public class FamilyConnectionImpl implements FamilyConnection {
     public Family getFamily(long id){
 
         String url = fcc.getFamilyUrl();
-        String content = connection.doGet(url+"/"+id);
+        CompletableFuture<String> fContent = connection.doGet(url+"/"+id);
+        String content = "";
+        try{content = fContent.get();}
+        catch(Exception ex) {System.out.println("Exception caught: "+ex);}
 
         Family f = null;
         try {

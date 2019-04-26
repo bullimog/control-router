@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -86,9 +87,15 @@ public class HomeController {
     @RequestMapping("/page")
     public ModelAndView pullPage(@RequestParam(value="url", defaultValue="http://www.google.com") String url) {
 
-        String content = connection.doGet(url);
+        // https://spring.io/guides/gs/async-method/
+        // https://dzone.com/articles/domain-model-design-pattern-video
+        // https://dzone.com/articles/20-examples-of-using-javas-completablefuture
+
         HashMap<String, Object> params = new HashMap<>();
-        params.put("date_time", content);
+        CompletableFuture<String> cfContent = connection.doGet(url);
+        CompletableFuture<Void> cf =cfContent.thenAcceptAsync(c -> params.put("date_time", c));
+        cf.join();
+
         return new ModelAndView("showMessage", params);
     }
 

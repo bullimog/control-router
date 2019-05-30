@@ -15,6 +15,7 @@ FROM openjdk:11-jre-slim
 COPY target/control-router-0.0.1-SNAPSHOT.jar /usr/local/lib/control-router.jar
 COPY application.properties application.properties
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/control-router.jar"]
+ENTRYPOINT ["java","--add-opens=java.base/java.lang=ALL-UNNAMED", "--add-opens=java.base/java.io=ALL-UNNAMED", "--add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED", "-jar","/usr/local/lib/control-router.jar"]
 
+# --add-opens were added to avoid Illegal reflective access Warnings
 

@@ -18,6 +18,6 @@ Can also start another instance, to demonstrate service-to-service communication
 To Build a Docker image:
 > docker build -t control-router .
 
-To run the image within a Docker container:
-> docker run --rm -p 8080:8080 -it control-router:latest
+To run the image within a Docker container: (auto remove container on exit; map port 8080 to the outside; create a pseudo-TTY for container stdin)
+> docker run -p 8080:8080 --rm -it control-router:latest
 

@@ -22,10 +22,10 @@ public class TestLoginController {
     @InjectMocks //Request to inject mocks into the LoginController instance
     private LoginController loginController = new LoginController();
 
-    @Mock //Mockito will create a mock version and inject it into LoginController.
+    @Mock //Mockito will create a mock instance of HttpConnection and inject it into LoginController.
     private HttpConnection connection;
 
-    @Mock //Mockito will create a mock version and inject it into LoginController.
+    @Mock //Mockito will create a mock instane of LoginControllerConfig and inject it into LoginController.
     private LoginControllerConfig loginControllerConfig;
 
     @Test

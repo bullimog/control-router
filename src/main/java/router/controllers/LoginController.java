@@ -20,7 +20,6 @@ public class LoginController {
     @Autowired
     private LoginControllerConfig config;
 
-
     @RequestMapping("/login")
     public ModelAndView loginPage() {
         HashMap<String, String> formData = new HashMap<>();

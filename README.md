@@ -1,5 +1,5 @@
 # Control Router
-Spring Boot application to control a remove web form. Accessible on port 8080, by default
+Spring Boot application to control a remote web form. Accessible on port 8080, by default
 
 Build and package:
 > mvn clean package
@@ -19,5 +19,5 @@ To Build a Docker image:
 > docker build -t control-router .
 
 To run the image within a Docker container: (auto remove container on exit; map port 8080 to the outside; create a pseudo-TTY for container stdin)
-> docker run -p 8080:8080 --rm -it control-router:latest
+> docker run -p 80:8080 --rm -it control-router:latest
 

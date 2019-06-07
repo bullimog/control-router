@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,6 +6,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
+
+<#-- Retrieve messages from messages.properties files... -->
+<@spring.messageText "title" "Default message" />
+<@spring.messageText "titlez" "Msg not found"/>
+<br/><br/>
 
 Family:<br/>
 ${family.id}<br/>

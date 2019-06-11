@@ -106,6 +106,11 @@ public class HomeController {
         return "international";
     }
 
+    @GetMapping("/hello")
+    public String getHelloPage() {
+        return "hello";
+    }
+
 
 
 }

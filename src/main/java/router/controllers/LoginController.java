@@ -20,16 +20,21 @@ public class LoginController {
     @Autowired
     private LoginControllerConfig config;
 
-    @RequestMapping("/login")
+    @RequestMapping("/loginXX")
     public ModelAndView loginPage() {
         HashMap<String, String> formData = new HashMap<>();
-        formData.put("rn", config.getUsername());
-        formData.put("hidepw",config.getPassword());
+        formData.put("username", config.getUsername());
+        formData.put("password",config.getPassword());
         int response = connection.doPost(config.getLoginUrl(), formData);
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("date_time", response);
-        return new ModelAndView("showMessage", params);
+        return new ModelAndView("login", params);
+    }
+
+    @RequestMapping("/login")
+    public String getLoginPage() {
+        return "login";
     }
 
 }

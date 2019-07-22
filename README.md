@@ -21,3 +21,18 @@ To Build a Docker image:
 To run the image within a Docker container: (auto remove container on exit; map port 8080 to the outside; create a pseudo-TTY for container stdin)
 > docker run -p 80:8080 --rm -it control-router:latest
 
+
+# HomeController Endpoints
+> GET /
+> GET /family
+> GET /forward
+> GET /getDataAndTime
+> GET /greeting
+> GET /page
+> GET /international
+
+# JsonController Endpoints
+> GET  /myservice/family-back/{familyId}
+> GET  /myservice/family/{familyId}
+> POST /myservice/family
+

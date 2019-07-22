@@ -23,16 +23,16 @@ To run the image within a Docker container: (auto remove container on exit; map 
 
 
 # HomeController Endpoints
-> GET /
-> GET /family
-> GET /forward
-> GET /getDataAndTime
-> GET /greeting
-> GET /page
-> GET /international
+* GET /
+* GET /family
+* GET /forward
+* GET /getDataAndTime
+* GET /greeting
+* GET /page
+* GET /international
 
 # JsonController Endpoints
-> GET  /myservice/family-back/{familyId}
-> GET  /myservice/family/{familyId}
-> POST /myservice/family
+* GET  /myservice/family-back/{familyId}
+* GET  /myservice/family/{familyId}
+* POST /myservice/family
 

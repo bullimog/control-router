@@ -32,6 +32,7 @@ public class LoginController {
         return new ModelAndView("login", params);
     }
 
+    //Defined as login endpoint, in WebSecurityConfig
     @RequestMapping("/login")
     public String getLoginPage() {
         return "login";

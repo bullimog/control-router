@@ -31,7 +31,7 @@ public class HomeController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-
+    //unauthenticated method. See WebSecurityConfig
     @RequestMapping("/family")
     public ModelAndView family(@RequestParam(value="id", defaultValue="1") String id) {
         long idIn = 1;
@@ -58,6 +58,7 @@ public class HomeController {
     }
 
 
+    //unauthenticated method. See WebSecurityConfig
     @RequestMapping(value = "/getDateAndTime")
     public ModelAndView getDateAndTime() {
 

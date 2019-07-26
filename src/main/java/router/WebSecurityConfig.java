@@ -18,7 +18,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/myservice/family/{id:[0-9]+}", "/family").permitAll()
+                .antMatchers("/myservice/family/{id:[0-9]+}",
+                                         "/family",
+                                         "/getDateAndTime").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -38,6 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .password("password")
                         .roles("USER")
                         .build();
+
+//        PasswordEncoderFactories
+//        UserDetails user2 =
+//                User.withUsername("user")
+//                    .password("password")
+//                    .roles("USER")
+//                    .passwordEncoder()
+//                .build();
 
         return new InMemoryUserDetailsManager(user);
     }

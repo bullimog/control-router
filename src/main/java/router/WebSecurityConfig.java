@@ -20,7 +20,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/myservice/family/{id:[0-9]+}",
                                          "/family",
-                                         "/getDateAndTime").permitAll()
+                                         "/getDateAndTime",
+                                         "/storePerson",
+                                         "/findPerson").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

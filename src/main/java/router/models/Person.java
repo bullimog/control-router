@@ -1,6 +1,8 @@
 package router.models;
+import org.springframework.data.annotation.Id;
 
 public class Person {
+    @Id
     private  long id;
     private  String first;
     private  String last;

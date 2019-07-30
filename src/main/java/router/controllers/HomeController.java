@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import router.connectors.FamilyConnection;
+import router.repositories.FamilyRepository;
 import router.connectors.HttpConnection;
 import router.models.Family;
 import router.models.Greeting;
 import org.springframework.web.servlet.ModelAndView;
+import router.models.Person;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -30,6 +33,42 @@ public class HomeController {
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
+
+    @Autowired
+    private FamilyRepository repository;
+
+
+    //db.person.find().pretty();
+    @RequestMapping("/storePerson")
+    public ModelAndView mongoStore(@RequestParam(value="first", defaultValue="first") String firstName,
+                              @RequestParam(value="last", defaultValue="last") String lastName) {
+
+        long id = counter.incrementAndGet();
+        Person person = new Person(id, firstName, lastName, 25);
+        repository.save(person);
+
+        Greeting g = new Greeting(id,
+                String.format(template,person.getFirst()));
+
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("greeting", g);
+        return new ModelAndView("greeting", params);
+    }
+
+    @RequestMapping("/findPerson")
+    public ModelAndView mongoFind(@RequestParam(value="first", defaultValue="first") String firstName)  {
+
+        Person person = repository.findByFirst(firstName);
+
+        Greeting g = new Greeting(person.getId(),
+                String.format(template,person.getLast()));
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("greeting", g);
+        return new ModelAndView("greeting", params);
+    }
+
 
     //unauthenticated method. See WebSecurityConfig
     @RequestMapping("/family")

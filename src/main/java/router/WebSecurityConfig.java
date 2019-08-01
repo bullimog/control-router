@@ -22,7 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                          "/family",
                                          "/getDateAndTime",
                                          "/storePerson",
-                                         "/findPerson").permitAll()
+                                         "/findPerson",
+                                         "/people").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

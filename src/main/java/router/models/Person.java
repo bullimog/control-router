@@ -1,15 +1,24 @@
 package router.models;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Person {
-    @Id
-    private  long id;
+    @Id private  long id;
+
+    @Indexed(name = "first_index", direction = IndexDirection.DESCENDING)
     private  String first;
     private  String last;
     private  int age;
 
     public Person(long id, String first, String last, int age){
         this.id = id;
+        this.first = first;
+        this.last = last;
+        this.age = age;
+    }
+
+    public Person(String first, String last, int age){
         this.first = first;
         this.last = last;
         this.age = age;

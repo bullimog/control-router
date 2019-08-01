@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import router.connectors.FamilyConnection;
-import router.repositories.FamilyRepository;
+import router.repositories.PersonRepository;
 import router.connectors.HttpConnection;
 import router.models.Family;
 import router.models.Greeting;
@@ -35,16 +35,22 @@ public class HomeController {
     private final AtomicLong counter = new AtomicLong();
 
     @Autowired
-    private FamilyRepository repository;
+    private PersonRepository repository;
 
-
+    //https://spring.io/guides/gs/accessing-data-mongodb/
     //db.person.find().pretty();
+    //spring.data.mongodb.uri is set in application.properties (https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-mongodb)
     @RequestMapping("/storePerson")
     public ModelAndView mongoStore(@RequestParam(value="first", defaultValue="first") String firstName,
-                              @RequestParam(value="last", defaultValue="last") String lastName) {
+                              @RequestParam(value="last", defaultValue="last") String lastName,
+                                   @RequestParam(value="age", defaultValue="age") String age) {
 
         long id = counter.incrementAndGet();
-        Person person = new Person(id, firstName, lastName, 25);
+        int ageIn= 1;
+        try{
+            ageIn = Integer.parseInt(age);
+        }catch(NumberFormatException ex) {System.out.println("WARN:"+ex);}
+        Person person = new Person(firstName, lastName, ageIn);
         repository.save(person);
 
         Greeting g = new Greeting(id,
@@ -61,6 +67,20 @@ public class HomeController {
 
         Person person = repository.findByFirst(firstName);
 
+        Greeting g = new Greeting(person.getId(),
+                String.format(template,person.getLast()));
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("greeting", g);
+        return new ModelAndView("greeting", params);
+    }
+
+    @RequestMapping("/deletePerson")
+    public ModelAndView mongodelete(@RequestParam(value="first", defaultValue="first") String firstName)  {
+
+        repository.deleteByFirst(firstName);
+
+        Person person = new Person("First", "Deleted", 0);
         Greeting g = new Greeting(person.getId(),
                 String.format(template,person.getLast()));
 

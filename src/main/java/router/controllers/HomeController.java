@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import router.connectors.FamilyConnection;
+import router.connectors.SequenceDao;
 import router.repositories.PersonRepository;
 import router.connectors.HttpConnection;
 import router.models.Family;
@@ -37,23 +38,34 @@ public class HomeController {
     @Autowired
     private PersonRepository repository;
 
+    
+    @Autowired
+    private SequenceDao sequenceDao;
+    private static final String HOSTING_SEQ_KEY = "hosting";
+/*
+    > db.sequence.find()
+    { "_id" : "hosting", "seq" : 6 }
+*/
+
+
     //https://spring.io/guides/gs/accessing-data-mongodb/
     //db.person.find().pretty();
     //spring.data.mongodb.uri is set in application.properties (https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-mongodb)
     @RequestMapping("/storePerson")
     public ModelAndView mongoStore(@RequestParam(value="first", defaultValue="first") String firstName,
-                              @RequestParam(value="last", defaultValue="last") String lastName,
-                                   @RequestParam(value="age", defaultValue="age") String age) {
+                                   @RequestParam(value="last",  defaultValue="last") String lastName,
+                                   @RequestParam(value="age",   defaultValue="age") String age) {
 
-        long id = counter.incrementAndGet();
+        long seq = sequenceDao.getNextSequenceId(HOSTING_SEQ_KEY);
+        System.out.println("Next SequenceId = " + seq);
         int ageIn= 1;
         try{
             ageIn = Integer.parseInt(age);
         }catch(NumberFormatException ex) {System.out.println("WARN:"+ex);}
-        Person person = new Person(firstName, lastName, ageIn);
+        Person person = new Person(seq, firstName, lastName, ageIn);
         repository.save(person);
 
-        Greeting g = new Greeting(id,
+        Greeting g = new Greeting(seq,
                 String.format(template,person.getFirst()));
 
 

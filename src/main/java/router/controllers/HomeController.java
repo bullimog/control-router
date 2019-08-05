@@ -38,7 +38,6 @@ public class HomeController {
     @Autowired
     private PersonRepository repository;
 
-    
     @Autowired
     private SequenceDao sequenceDao;
     private static final String HOSTING_SEQ_KEY = "hosting";
@@ -51,6 +50,7 @@ public class HomeController {
     //https://spring.io/guides/gs/accessing-data-mongodb/
     //db.person.find().pretty();
     //spring.data.mongodb.uri is set in application.properties (https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-mongodb)
+    //https://www.mkyong.com/mongodb/spring-data-mongodb-auto-sequence-id-example/
     @RequestMapping("/storePerson")
     public ModelAndView mongoStore(@RequestParam(value="first", defaultValue="first") String firstName,
                                    @RequestParam(value="last",  defaultValue="last") String lastName,
@@ -61,7 +61,10 @@ public class HomeController {
         int ageIn= 1;
         try{
             ageIn = Integer.parseInt(age);
-        }catch(NumberFormatException ex) {System.out.println("WARN:"+ex);}
+        }catch(NumberFormatException ex) {
+            System.out.println("WARN:"+ex);
+            return new ModelAndView("redirect:/getDateAndTime");
+        }
         Person person = new Person(seq, firstName, lastName, ageIn);
         repository.save(person);
 

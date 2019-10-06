@@ -83,6 +83,21 @@ public class HomeController {
         return new ModelAndView("greeting", params);
     }
 
+    @RequestMapping("/hostname")
+    public ModelAndView greeting() {
+
+        String host = "unknown";
+        try{
+            host = java.net.InetAddress.getLocalHost().getHostName();
+        }
+        catch(java.net.UnknownHostException ex){}
+        Greeting g = new Greeting(counter.incrementAndGet(), host);
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("greeting", g);
+        return new ModelAndView("greeting", params);
+    }
+
 
     @RequestMapping("/page")
     public ModelAndView pullPage(@RequestParam(value="url", defaultValue="http://www.google.com") String url) {

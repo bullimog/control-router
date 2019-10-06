@@ -26,8 +26,9 @@ To run the image within a Docker container: (auto remove container on exit; map 
 * GET /
 * GET /family
 * GET /forward
-* GET /getDataAndTime
+* GET /getDateAndTime
 * GET /greeting
+* GET /hostname
 * GET /page
 * GET /international
 

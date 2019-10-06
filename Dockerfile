@@ -10,7 +10,9 @@
 #
 # Package stage
 #
-FROM openjdk:11-jre-slim
+#FROM openjdk:11-jre-slim
+#FROM arm64v8/openjdk:11-jre-slim
+FROM arm32v7/openjdk:11-jre-slim
 #COPY --from=build /home/app/target/control-router-0.0.1-SNAPSHOT.jar /usr/local/lib/control-router.jar
 COPY target/control-router-0.0.1-SNAPSHOT.jar /usr/local/lib/control-router.jar
 COPY application.properties application.properties
